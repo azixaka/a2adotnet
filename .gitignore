@@ -1,8 +1,4 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs
+﻿/.vs
 /src/A2Adotnet.Client/obj
 /src/A2Adotnet.Common/obj
 /src/A2Adotnet.Server/obj
