@@ -6,3 +6,6 @@
 /src/A2Adotnet.Client/obj
 /src/A2Adotnet.Common/obj
 /src/A2Adotnet.Server/obj
+/src/A2Adotnet.Client/bin
+/src/A2Adotnet.Common/bin
+/src/A2Adotnet.Server/bin
