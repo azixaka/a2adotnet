@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Using netstandard2.0 for broad compatibility -->
+    <TargetFramework>netstandard2.0</TargetFramework> 
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>A2Adotnet.Common</RootNamespace>
+    <Description>Common types and interfaces for the A2A C#/.NET library.</Description>
+    <PackageTags>a2a;agent;protocol;interoperability</PackageTags>
+    <!-- Add other relevant properties like Authors, RepositoryUrl etc. later -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- System.Text.Json is needed for attributes and potentially converters -->
+    <!-- For netstandard2.0, explicitly reference it. -->
+    <PackageReference Include="System.Text.Json" Version="8.0.3" /> 
+  </ItemGroup>
+
+</Project>

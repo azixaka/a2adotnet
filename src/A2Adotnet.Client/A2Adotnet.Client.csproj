@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>A2Adotnet.Client</RootNamespace>
+    <Description>Client library for interacting with A2A (Agent-to-Agent) protocol servers.</Description>
+    <PackageTags>a2a;agent;protocol;interoperability;client</PackageTags>
+    <!-- Add other relevant properties like Authors, RepositoryUrl etc. later -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Required for IHttpClientFactory -->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <!-- Required for DI abstractions like IServiceCollection -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+     <!-- Required for Options pattern -->
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference the common types -->
+    <ProjectReference Include="..\A2Adotnet.Common\A2Adotnet.Common.csproj" />
+  </ItemGroup>
+
+</Project>
