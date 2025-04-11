@@ -493,7 +493,7 @@ public class A2AClient : IA2AClient
         return new RequestId(Interlocked.Increment(ref _requestIdCounter));
     }
 
-    private async Task AddAuthenticationHeaderAsync(HttpRequestMessage request)
+    private async System.Threading.Tasks.Task AddAuthenticationHeaderAsync(HttpRequestMessage request)
     {
         if (_options.GetAuthenticationHeaderAsync != null)
         {

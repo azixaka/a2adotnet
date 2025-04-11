@@ -73,7 +73,7 @@ internal class SendTaskSubscribeHandler : IA2ARequestHandler<TaskSendParams, obj
         // 4. Trigger agent logic processing (potentially in background)
         // Use Task.Run or similar to avoid blocking the SSE connection setup if logic is long-running.
         // Ensure agent logic updates TaskManager, which should trigger SSE sends via the manager.
-        _ = Task.Run(async () => {
+        _ = System.Threading.Tasks.Task.Run(async () => { // Qualified Task
              try
              {
                  await _agentLogic.ProcessTaskAsync(task, parameters.Message, cancellationToken);
@@ -84,7 +84,7 @@ internal class SendTaskSubscribeHandler : IA2ARequestHandler<TaskSendParams, obj
                  // Attempt to update task status to failed and notify via SSE/Push
                  try
                  {
-                    await _taskManager.UpdateTaskStatusAsync(task.Id, TaskState.Failed, new Message("agent", new List<Part> { new TextPart($"Agent processing failed: {ex.Message}") }), CancellationToken.None);
+                    await _taskManager.UpdateTaskStatusAsync(task.Id, TaskState.Failed, new Message { Role = "agent", Parts = new List<Part> { new TextPart($"Agent processing failed: {ex.Message}") } }, CancellationToken.None); // Use initializer for Message, constructor for TextPart
                     // TODO: Ensure TaskManager update triggers SSE send via ISseConnectionManager.SendUpdateAsync
                  } catch (Exception updateEx) {
                      _logger.LogError(updateEx, "Failed to update task status to Failed after background error for Task ID: {TaskId}", task.Id);

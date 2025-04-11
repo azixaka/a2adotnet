@@ -10,7 +10,7 @@ public record TaskArtifactUpdateEvent : TaskUpdateEventBase
     /// The ID of the task being updated.
     /// </summary>
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public override required string Id { get; init; } // Added override
 
     /// <summary>
     /// The artifact data being sent.

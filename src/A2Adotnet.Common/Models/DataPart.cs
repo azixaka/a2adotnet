@@ -12,7 +12,7 @@ public record DataPart : Part
     /// The structured JSON data. Using JsonNode allows representing any valid JSON structure.
     /// </summary>
     [JsonPropertyName("data")]
-    public required JsonNode Data { get; init; } // Use JsonNode for arbitrary JSON
+    public JsonNode Data { get; init; } // Removed required, Use JsonNode for arbitrary JSON
 
     // Constructor for convenience
     public DataPart(JsonNode data, Dictionary<string, object>? metadata = null)

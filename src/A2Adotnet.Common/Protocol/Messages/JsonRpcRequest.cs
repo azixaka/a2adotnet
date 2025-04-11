@@ -18,7 +18,7 @@ public record JsonRpcRequest<TParams> : IJsonRpcMessageWithId where TParams : cl
     /// Request identifier. Must be a string or number.
     /// </summary>
     [JsonPropertyName("id")]
-    public required RequestId Id { get; init; }
+    public RequestId? Id { get; init; } // Made nullable to match interface
 
     /// <summary>
     /// Name of the method to invoke (e.g., "tasks/send").

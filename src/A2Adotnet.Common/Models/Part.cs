@@ -15,7 +15,7 @@ public abstract record Part
     /// The type of the part, used as the discriminator for polymorphic deserialization.
     /// </summary>
     [JsonPropertyName("type")]
-    public required string Type { get; init; } // Made required for clarity, though set by derived types
+    public string Type { get; init; } // Removed required, set by derived constructor
 
     /// <summary>
     /// Optional metadata for the specific part.

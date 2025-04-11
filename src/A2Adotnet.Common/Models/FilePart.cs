@@ -11,7 +11,7 @@ public record FilePart : Part
     /// The file content details (bytes or URI).
     /// </summary>
     [JsonPropertyName("file")]
-    public required FileContent File { get; init; }
+    public FileContent File { get; init; } // Removed required
 
     // Constructor for convenience
     public FilePart(FileContent file, Dictionary<string, object>? metadata = null)

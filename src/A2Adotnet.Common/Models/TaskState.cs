@@ -1,12 +1,13 @@
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+using System.Text.Json.Serialization; // Already present
+using System.Text.Json; // Add this for JsonStringEnumMemberConverter
 
 namespace A2Adotnet.Common.Models;
 
 /// <summary>
 /// Represents the lifecycle state of a Task.
 /// </summary>
-[JsonConverter(typeof(JsonStringEnumMemberConverter))] // Use EnumMember value for serialization
+[JsonConverter(typeof(JsonStringEnumConverter))] // Use standard string enum converter
 public enum TaskState
 {
     /// <summary>

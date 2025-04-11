@@ -7,8 +7,10 @@ using Microsoft.Extensions.Options;
 using System.Buffers; // Added for PipeReader
 using System.IO.Pipelines; // Added for PipeReader
 using System.Reflection;
+using System.Collections.Concurrent; // Added
 using System.Text.Json;
 using System.Text.Json.Nodes; // Added for partial deserialization
+using System.Text; // Added for Encoding
 
 namespace A2Adotnet.Server;
 
@@ -142,9 +144,20 @@ internal class A2ARequestDispatcher : IA2ARequestDispatcher
                 // Write success response ONLY if the handler didn't already handle the response stream (like SSE)
                 // We identify SSE handlers by checking if their result type is 'object' (as defined in the handler)
                 // and the actual returned result is null. A more robust check might involve specific attributes or interfaces.
+                // If we successfully invoked a handler for a request (not notification), ID must be present.
+                if (requestId == null)
+                {
+                    // This indicates a logic error or spec violation if a non-notification request succeeded without an ID.
+                    _logger.LogError("Successfully handled method '{Method}' but request ID was unexpectedly null.", method);
+                    throw new A2AServerException(A2AErrorCodes.InternalError, "Internal error: Request ID missing after successful handler execution.");
+                }
+
+                // Write success response ONLY if the handler didn't already handle the response stream (like SSE)
+                // We identify SSE handlers by checking if their result type is 'object' (as defined in the handler)
+                // and the actual returned result is null. A more robust check might involve specific attributes or interfaces.
                 if (!(handlerInfo.ResultType == typeof(object) && result == null))
                 {
-                    await WriteSuccessResponseAsync(context, requestId.Value, result); // ID must be non-null for successful request handling
+                    await WriteSuccessResponseAsync(context, requestId.Value, result);
                 }
                 else
                 {

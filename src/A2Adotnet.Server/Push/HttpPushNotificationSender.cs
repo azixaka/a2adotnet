@@ -34,7 +34,7 @@ internal class HttpPushNotificationSender : IPushNotificationSender
         };
     }
 
-    public async Task SendNotificationAsync(PushNotificationConfig config, Common.Models.Task task, CancellationToken cancellationToken = default)
+    public async System.Threading.Tasks.Task SendNotificationAsync(PushNotificationConfig config, Common.Models.Task task, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(config);
         ArgumentNullException.ThrowIfNull(task);

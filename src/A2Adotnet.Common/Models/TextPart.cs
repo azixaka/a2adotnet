@@ -11,7 +11,7 @@ public record TextPart : Part
     /// The textual content.
     /// </summary>
     [JsonPropertyName("text")]
-    public required string Text { get; init; }
+    public string Text { get; init; } // Removed required
 
     // Constructor for convenience
     public TextPart(string text, Dictionary<string, object>? metadata = null)

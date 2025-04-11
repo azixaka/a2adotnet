@@ -27,11 +27,5 @@ public record TaskStatus
     [JsonPropertyName("timestamp")]
     public DateTimeOffset Timestamp { get; init; } = DateTimeOffset.UtcNow;
 
-    // Constructor for convenience
-    public TaskStatus(TaskState state, Message? message = null, DateTimeOffset? timestamp = null)
-    {
-        State = state;
-        Message = message;
-        Timestamp = timestamp ?? DateTimeOffset.UtcNow;
-    }
+    // Removed constructor to allow object initializers with required members
 }

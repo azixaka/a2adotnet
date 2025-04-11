@@ -29,7 +29,7 @@ public class InMemorySseConnectionManager : ISseConnectionManager
         };
     }
 
-    public async Task AddConnectionAsync(string taskId, HttpContext context, CancellationToken cancellationToken)
+    public async System.Threading.Tasks.Task AddConnectionAsync(string taskId, HttpContext context, CancellationToken cancellationToken)
     {
         SseHelper.PrepareSseStream(context.Response);
 
@@ -55,7 +55,7 @@ public class InMemorySseConnectionManager : ISseConnectionManager
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Keep-alive mechanism (e.g., send a comment periodically)
-                await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken); // Adjust interval as needed
+                await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(30), cancellationToken); // Adjust interval as needed
                 await SseHelper.WriteSseCommentAsync(context.Response, "ping", cancellationToken);
             }
         }
@@ -96,7 +96,7 @@ public class InMemorySseConnectionManager : ISseConnectionManager
         }
     }
 
-    public async Task SendUpdateAsync(string taskId, TaskUpdateEventBase updateEvent, CancellationToken cancellationToken = default)
+    public async System.Threading.Tasks.Task SendUpdateAsync(string taskId, TaskUpdateEventBase updateEvent, CancellationToken cancellationToken = default)
     {
         if (_connections.TryGetValue(taskId, out var connectionList))
         {
@@ -133,7 +133,7 @@ public class InMemorySseConnectionManager : ISseConnectionManager
                         RemoveConnection(taskId, context); // Remove potentially broken connection
                     }
                 });
-                await Task.WhenAll(sendTasks);
+                await System.Threading.Tasks.Task.WhenAll(sendTasks);
             }
         }
         else

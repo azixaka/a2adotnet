@@ -70,7 +70,8 @@ internal class SendTaskHandler : IA2ARequestHandler<TaskSendParams, Common.Model
         {
             _logger.LogError(ex, "Agent logic failed for Task ID: {TaskId}", task.Id);
             // Attempt to update task status to failed
-            await _taskManager.UpdateTaskStatusAsync(task.Id, TaskState.Failed, new Message("agent", new List<Part> { new TextPart($"Agent processing failed: {ex.Message}") }), CancellationToken.None); // Use CancellationToken.None for cleanup
+            // Use constructors now that 'required' is removed from Parts/Message
+            await _taskManager.UpdateTaskStatusAsync(task.Id, TaskState.Failed, new Message { Role = "agent", Parts = new List<Part> { new TextPart($"Agent processing failed: {ex.Message}") } }, CancellationToken.None); // Use initializer for Message, constructor for TextPart
 
             // Re-throw as internal server error for JSON-RPC response
             throw new A2AServerException(A2AErrorCodes.InternalError, $"Agent processing failed: {ex.Message}", innerException: ex);

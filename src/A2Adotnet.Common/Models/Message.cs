@@ -26,22 +26,5 @@ public record Message
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, object>? Metadata { get; init; }
 
-    // Constructor for convenience
-    public Message(string role, List<Part> parts, Dictionary<string, object>? metadata = null)
-    {
-        // Basic validation
-        if (role != "user" && role != "agent")
-        {
-            throw new ArgumentException("Role must be 'user' or 'agent'.", nameof(role));
-        }
-        ArgumentNullException.ThrowIfNull(parts);
-        if (parts.Count == 0)
-        {
-             throw new ArgumentException("Parts list cannot be empty.", nameof(parts));
-        }
-
-        Role = role;
-        Parts = parts;
-        Metadata = metadata;
-    }
+    // Removed constructor to allow object initializers with required members
 }

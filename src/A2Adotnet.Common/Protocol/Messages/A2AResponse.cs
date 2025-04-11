@@ -18,7 +18,7 @@ public record A2AResponse<TResult> : IJsonRpcMessageWithId
     /// Request identifier matching the original request.
     /// </summary>
     [JsonPropertyName("id")]
-    public required RequestId Id { get; init; }
+    public RequestId? Id { get; init; } // Made nullable to match interface
 
     /// <summary>
     /// The result of the method invocation. Can be null.

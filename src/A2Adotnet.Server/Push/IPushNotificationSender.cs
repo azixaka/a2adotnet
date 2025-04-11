@@ -13,10 +13,10 @@ public interface IPushNotificationSender
     /// <param name="config">The push notification configuration containing the URL and authentication details.</param>
     /// <param name="task">The updated task object to send.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A Task representing the asynchronous operation.</returns>
+    /// <returns>A System.Threading.Tasks.Task representing the asynchronous operation.</returns>
     /// <remarks>
     /// Implementations should handle authentication based on the config
     /// and potentially implement retry logic or error handling.
     /// </remarks>
-    Task SendNotificationAsync(PushNotificationConfig config, Common.Models.Task task, CancellationToken cancellationToken = default);
+    System.Threading.Tasks.Task SendNotificationAsync(PushNotificationConfig config, Common.Models.Task task, CancellationToken cancellationToken = default);
 }

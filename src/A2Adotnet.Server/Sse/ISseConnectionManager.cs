@@ -15,8 +15,8 @@ public interface ISseConnectionManager
     /// <param name="taskId">The ID of the task to associate the connection with.</param>
     /// <param name="context">The HttpContext representing the client connection.</param>
     /// <param name="cancellationToken">Token to signal connection closure.</param>
-    /// <returns>A Task representing the asynchronous operation of managing the connection.</returns>
-    Task AddConnectionAsync(string taskId, HttpContext context, CancellationToken cancellationToken);
+    /// <returns>A System.Threading.Tasks.Task representing the asynchronous operation of managing the connection.</returns>
+    System.Threading.Tasks.Task AddConnectionAsync(string taskId, HttpContext context, CancellationToken cancellationToken);
 
     /// <summary>
     /// Removes a connection associated with a task ID (e.g., on disconnect).
@@ -31,6 +31,6 @@ public interface ISseConnectionManager
     /// <param name="taskId">The task ID.</param>
     /// <param name="updateEvent">The update event to send.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A Task representing the asynchronous operation.</returns>
-    Task SendUpdateAsync(string taskId, TaskUpdateEventBase updateEvent, CancellationToken cancellationToken = default);
+    /// <returns>A System.Threading.Tasks.Task representing the asynchronous operation.</returns>
+    System.Threading.Tasks.Task SendUpdateAsync(string taskId, TaskUpdateEventBase updateEvent, CancellationToken cancellationToken = default);
 }

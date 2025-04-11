@@ -55,21 +55,5 @@ public record Artifact
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, object>? Metadata { get; init; }
 
-     // Constructor for convenience
-    public Artifact(List<Part> parts, string? name = null, string? description = null, int index = 0, bool? append = null, bool? lastChunk = null, Dictionary<string, object>? metadata = null)
-    {
-        ArgumentNullException.ThrowIfNull(parts);
-        if (parts.Count == 0)
-        {
-             throw new ArgumentException("Parts list cannot be empty.", nameof(parts));
-        }
-
-        Parts = parts;
-        Name = name;
-        Description = description;
-        Index = index;
-        Append = append;
-        LastChunk = lastChunk;
-        Metadata = metadata;
-    }
+    // Removed constructor to allow object initializers with required members
 }

@@ -17,11 +17,11 @@ public interface IAgentLogicInvoker
     /// <param name="task">The task being processed.</param>
     /// <param name="triggeringMessage">The message that triggered this processing (either initial or follow-up).</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <returns>A System.Threading.Tasks.Task representing the asynchronous operation.</returns>
     /// <remarks>
     /// IMPORTANT: The implementation MUST update the task status via ITaskManager upon completion or when input is required.
     /// For non-streaming ('tasks/send'), this method should ideally complete the task processing synchronously within the request context.
     /// For streaming ('tasks/sendSubscribe'), this method might run in the background, posting updates via ITaskManager.
     /// </remarks>
-    Task ProcessTaskAsync(Common.Models.Task task, Message triggeringMessage, CancellationToken cancellationToken);
+    System.Threading.Tasks.Task ProcessTaskAsync(Common.Models.Task task, Message triggeringMessage, CancellationToken cancellationToken);
 }

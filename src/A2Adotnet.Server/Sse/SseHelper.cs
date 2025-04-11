@@ -15,7 +15,7 @@ internal static class SseHelper
     /// <summary>
     /// Writes a task update event to the HTTP response stream in SSE format.
     /// </summary>
-    public static async Task WriteSseEventAsync(
+    public static async System.Threading.Tasks.Task WriteSseEventAsync( // Qualified Task
         HttpResponse response,
         TaskUpdateEventBase updateEvent,
         JsonSerializerOptions jsonOptions,
@@ -69,7 +69,7 @@ internal static class SseHelper
     /// <summary>
     /// Writes a simple SSE comment (keep-alive ping).
     /// </summary>
-    public static async Task WriteSseCommentAsync(HttpResponse response, string comment = "", CancellationToken cancellationToken = default)
+    public static async System.Threading.Tasks.Task WriteSseCommentAsync(HttpResponse response, string comment = "", CancellationToken cancellationToken = default) // Qualified Task
     {
          try
         {

@@ -1,5 +1,5 @@
 using A2Adotnet.Common.Models;
-using A2Adotnet.Common.Models; // Added for TaskUpdateEventBase etc.
+using A2Adotnet.Common.Models; // Re-added
 using A2Adotnet.Server.Abstractions;
 using A2Adotnet.Server.Push; // Added for IPushNotificationSender
 using A2Adotnet.Server.Sse; // Added for ISseConnectionManager
@@ -48,18 +48,18 @@ public class InMemoryTaskManager : ITaskManager
         ArgumentNullException.ThrowIfNull(initialMessage);
 
         Common.Models.Task? task = null;
-        bool created = false;
+        // bool created = false; // Removed unused variable
 
         task = _tasks.AddOrUpdate(taskId,
             // Add function (if task doesn't exist)
             addValueFactory: (id) =>
             {
-                created = true;
+                // created = true; // Removed unused variable assignment
                 var newTask = new Common.Models.Task
                 {
                     Id = id,
                     SessionId = sessionId ?? Guid.NewGuid().ToString(), // Generate session if needed
-                    Status = new TaskStatus(TaskState.Submitted, timestamp: DateTimeOffset.UtcNow),
+                    Status = new Common.Models.TaskStatus { State = TaskState.Submitted, Timestamp = DateTimeOffset.UtcNow }, // Use initializer
                     Artifacts = new List<Artifact>(),
                     History = null, // History handled separately
                     Metadata = null
@@ -89,7 +89,7 @@ public class InMemoryTaskManager : ITaskManager
                 return existingTask;
             });
 
-        return Task.FromResult(task);
+        return System.Threading.Tasks.Task.FromResult(task);
     }
 
 
@@ -116,9 +116,9 @@ public class InMemoryTaskManager : ITaskManager
             {
                 clonedTask = clonedTask with { History = null }; // Ensure history is null if not requested/found
             }
-            return Task.FromResult<Common.Models.Task?>(clonedTask);
+            return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(clonedTask);
         }
-        return Task.FromResult<Common.Models.Task?>(null);
+        return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(null);
     }
 
      public Task<bool> UpdateTaskStatusAsync(
@@ -130,7 +130,7 @@ public class InMemoryTaskManager : ITaskManager
         if (_tasks.TryGetValue(taskId, out var existingTask))
         {
             // Create new status
-            var newStatus = new TaskStatus(newState, statusMessage, DateTimeOffset.UtcNow);
+            var newStatus = new Common.Models.TaskStatus { State = newState, Message = statusMessage, Timestamp = DateTimeOffset.UtcNow }; // Use initializer
 
             // Update task using 'with' expression for immutability
             var updatedTask = existingTask with { Status = newStatus };
@@ -152,13 +152,13 @@ public class InMemoryTaskManager : ITaskManager
                 // Also trigger push notification if applicable
                 TriggerPushNotificationIfNeeded(taskId, updatedTask, newState);
 
-                return Task.FromResult(true);
+                return System.Threading.Tasks.Task.FromResult(true);
             }
             // If TryUpdate fails, it means the value was changed concurrently. Retry or fail?
             // For simplicity, we fail here. A more robust implementation might retry.
-            return Task.FromResult(false);
+            return System.Threading.Tasks.Task.FromResult(false);
         }
-        return Task.FromResult(false); // Task not found
+        return System.Threading.Tasks.Task.FromResult(false); // Task not found
      }
 
     public Task<bool> AddArtifactAsync(
@@ -183,11 +183,11 @@ public class InMemoryTaskManager : ITaskManager
                 var artifactEvent = new TaskArtifactUpdateEvent { Id = taskId, Artifact = artifact };
                 _ = _sseManager.SendUpdateAsync(taskId, artifactEvent, CancellationToken.None); // Fire-and-forget
 
-                return Task.FromResult(true);
+                return System.Threading.Tasks.Task.FromResult(true);
             }
-            return Task.FromResult(false); // Concurrent update failed
+            return System.Threading.Tasks.Task.FromResult(false); // Concurrent update failed
         }
-        return Task.FromResult(false); // Task not found
+        return System.Threading.Tasks.Task.FromResult(false); // Task not found
     }
 
     public Task<bool> AddHistoryMessageAsync(
@@ -202,15 +202,15 @@ public class InMemoryTaskManager : ITaskManager
             {
                 historyList.Add(message);
             }
-            return Task.FromResult(true);
+            return System.Threading.Tasks.Task.FromResult(true);
          }
          // Task might exist in _tasks but not _history if created abnormally, handle defensively
          else if (_tasks.ContainsKey(taskId))
          {
              // Try adding a new history list
-             return Task.FromResult(_history.TryAdd(taskId, new List<Message> { message }));
+             return System.Threading.Tasks.Task.FromResult(_history.TryAdd(taskId, new List<Message> { message }));
          }
-         return Task.FromResult(false); // Task not found
+         return System.Threading.Tasks.Task.FromResult(false); // Task not found
     }
 
 
@@ -223,20 +223,20 @@ public class InMemoryTaskManager : ITaskManager
             // Check if task is already in a terminal state
             if (existingTask.Status.State is TaskState.Completed or TaskState.Canceled or TaskState.Failed)
             {
-                return Task.FromResult<Common.Models.Task?>(null); // Cannot cancel
+                return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(null); // Cannot cancel
             }
 
-            var newStatus = new TaskStatus(TaskState.Canceled, timestamp: DateTimeOffset.UtcNow);
+            var newStatus = new Common.Models.TaskStatus { State = TaskState.Canceled, Timestamp = DateTimeOffset.UtcNow }; // Use initializer
             var updatedTask = existingTask with { Status = newStatus };
 
             if (_tasks.TryUpdate(taskId, updatedTask, existingTask))
             {
-                return Task.FromResult<Common.Models.Task?>(updatedTask);
+                return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(updatedTask);
             }
             // Concurrent update failed
-            return Task.FromResult<Common.Models.Task?>(null);
+            return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(null);
         }
-        return Task.FromResult<Common.Models.Task?>(null); // Task not found
+        return System.Threading.Tasks.Task.FromResult<Common.Models.Task?>(null); // Task not found
     }
 
     public Task<bool> SetPushNotificationConfigAsync(
@@ -248,10 +248,10 @@ public class InMemoryTaskManager : ITaskManager
         // Check if task exists before setting config? Optional.
         if (!_tasks.ContainsKey(taskId))
         {
-            return Task.FromResult(false); // Or throw? For now, fail silently if task doesn't exist.
+            return System.Threading.Tasks.Task.FromResult(false); // Or throw? For now, fail silently if task doesn't exist.
         }
         _pushConfigs.AddOrUpdate(taskId, config, (id, existing) => config);
-        return Task.FromResult(true);
+        return System.Threading.Tasks.Task.FromResult(true);
     }
 
     public Task<PushNotificationConfig?> GetPushNotificationConfigAsync(
@@ -259,7 +259,7 @@ public class InMemoryTaskManager : ITaskManager
         CancellationToken cancellationToken = default)
     {
         _pushConfigs.TryGetValue(taskId, out var config);
-        return Task.FromResult(config); // Returns null if not found
+        return System.Threading.Tasks.Task.FromResult(config); // Returns null if not found
     }
 
     // Helper to trigger push notification

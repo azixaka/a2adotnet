@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Using netstandard2.0 for broad compatibility -->
-    <TargetFramework>netstandard2.0</TargetFramework> 
+    <!-- Using net8.0 for consistency and native modern C# features -->
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -15,7 +15,7 @@
   <ItemGroup>
     <!-- System.Text.Json is needed for attributes and potentially converters -->
     <!-- For netstandard2.0, explicitly reference it. -->
-    <PackageReference Include="System.Text.Json" Version="8.0.3" /> 
+    <PackageReference Include="System.Text.Json" Version="8.0.4" /> <!-- Updated version -->
   </ItemGroup>
 
 </Project>
