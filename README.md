@@ -1,3 +1,5 @@
+![A2A Banner](images/A2A_banner.png)
+
 # A2Adotnet: A C#/.NET Implementation of the A2A Protocol
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-repo/A2Adotnet) <!-- Replace with actual build status badge -->
