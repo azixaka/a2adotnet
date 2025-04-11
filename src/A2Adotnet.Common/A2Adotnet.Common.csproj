@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Using net8.0 for consistency and native modern C# features -->
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -9,13 +8,10 @@
     <RootNamespace>A2Adotnet.Common</RootNamespace>
     <Description>Common types and interfaces for the A2A C#/.NET library.</Description>
     <PackageTags>a2a;agent;protocol;interoperability</PackageTags>
-    <!-- Add other relevant properties like Authors, RepositoryUrl etc. later -->
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- System.Text.Json is needed for attributes and potentially converters -->
-    <!-- For netstandard2.0, explicitly reference it. -->
-    <PackageReference Include="System.Text.Json" Version="8.0.4" /> <!-- Updated version -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
 </Project>
